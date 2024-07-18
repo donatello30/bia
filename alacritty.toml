@@ -1,0 +1,8 @@
+################
+[shell]
+program = "/bin/bash"
+args = ["-l"]
+
+working_directory = "None"
+live_config_reload = true
+ipc_socket = true

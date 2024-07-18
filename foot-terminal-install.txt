@@ -1,0 +1,91 @@
+##########O33333######
+
+NOTA IMPORTANTE: NO INSTALAR LOS REPOS CON sudo POR QUE SI ESTAMOS EN NUESTRO HOME SE INSTALA SOLO CON:
+git clone  NO CON sudo git clone QUEDARIA ASI:
+
+git clone https://codeberg.org/dnkl/foot.git
+
+SE UTILIZA sudo SOLO CUANDO EL SISTEMA LO EXIJA.
+
+tambien tener:
+cmake, make, gcc, scdoc, check, harfbuzz ,freetypt2 , ttf-dejavu
+
+Requirements:
+-UTF-8 locale
+-fontconfig
+-freetype
+-pixman
+-wayland (client and cursor libraries)
+-xkbcommon
+-utf8proc (optional, needed for grapheme clustering)   me funciona   libutf8proc
+-libutempter (optional, needed for utmp logging on Linux)
+-ulog (optional, needed for utmp logging on FreeBSD)
+-fcft 1
+
+If you are packaging foot, you may also want to consider adding the -following optional dependencies:
+-libnotify: desktop notifications by default uses notify-send.
+-xdg-utils: URLs are by default launched with xdg-open.
+-bash-completion: If you want completion for positional arguments.
+
+Building
+In addition to the dev variant of the packages above, you need:
+
+-meson
+-ninja
+-wayland protocols
+-ncurses (needed to generate terminfo)
+-scdoc (for man page generation, not needed if documentation is disabled)
+-llvm (for PGO builds with Clang)
+-tllist 1
+-systemd (optional, foot will install systemd unit files if detected)
+
+A note on compilers; in general, foot runs much faster when compiled with gcc instead of clang. A profile-guided gcc build can be more than twice as fast as a clang build.
+
+Note GCC 10.1 has a performance regression that severely affects foot when doing PGO builds and building with -O2; it is about 30-40% slower compared to GCC 9.3.
+
+The work around is simple: make sure you build with -O3. This is the default with meson --buildtype=release, but e.g. makepkg can override it (makepkg uses -O2 by default).
+
+librerias para foot del mismo creador licencia MIT:
+https://codeberg.org/dnkl/tllist.git
+https://codeberg.org/dnkl/fcft.git          
+https://github.com/libcheck/check.git
+
+la instalacion me ha funcionado con:
+meson setup build --buildtype=release --prefix=/usr
+cd build
+sudo ninja
+sudo ninja install
+
+primero instalar tllist y despues fcft se construyen e instalan con PKGBUILD asi:
+makepkg -s
+
+se generara un archivo asi:  nombre_del_paquete.pkg.tar.zst
+
+luego instalar con:
+sudo pacman -U nombre_del_paquete.pkg.tar.zst 
+
+se verifica con:
+sudo pacman -Q nombre_del_paquete.pkg.tar.zst
+
+dependencias para fcft:  libutf8proc harfbuzz
+
+instalar hurfbuzz desde elcodigo por que artix no se encuentra con pacman.
+
+https://github.com/harfbuzz/harfbuzz.git
+
+$ sudo pacman -Suy meson pkg-config ragel gcc freetype2 glib2 cairo
+
+Then use meson to build the project like:
+
+meson build && meson test -C build
+
+On Windows, meson can build the project like above if a working MSVC's cl.exe (vcvarsall.bat) or gcc/clang is already on your path, and if you use something like meson build --wrap-mode=default it fetches and compiles most of the dependencies also. It is recommended to install CMake either manually or via the Visual Studio installer when building with MSVC, using meson.
+
+Our CI configurations are also a good source of learning how to build HarfBuzz.
+
+There is also amalgamated source provided with HarfBuzz which reduces whole process of building HarfBuzz to g++ src/harfbuzz.cc -fno-exceptions but there is no guarantee provided with buildability and reliability of features you get.
+
+
+
+
+

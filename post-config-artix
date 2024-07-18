@@ -1,0 +1,54 @@
+#
+Networking
+
+Most people will do fine with NetworkManager. For static network configuration it's preferable to install netifrc and edit /etc/conf.d/net for their setup.
+User permissions
+
+You can control who has access to and control of what by assigning them to groups. A more than full permission set for the primary user is granted by the following, consider reducing it to only necessary ones:
+
+ usermod -a -G video,audio,input,power,storage,optical,lp,scanner,dbus,adbusers,uucp,vboxusers USER
+
+Alsa base
+
+Create a new file
+
+ nano /etc/modprobe.d/alsa.conf
+
+Add the following line
+
+ options bt87x index=-2
+ options cx88_alsa index=-2
+ options saa7134-alsa index=-2
+ options snd-atiixp-modem index=-2
+ options snd-intel8x0m index=-2
+ options snd-via82xx-modem index=-2
+ options snd-usb-audio index=-2
+ options snd-usb-caiaq index=-2
+ options snd-usb-ua101 index=-2
+ options snd-usb-us122l index=-2
+ options snd-usb-usx2y index=-2
+ options snd-pcsp index=-2
+ options snd-usb-audio index=-2
+
+You can also provide an index of -2 to instruct alsa to never use a card as the primary one.
+OpenRC
+OpenRC settings
+
+Various parameters are controlled by /etc/rc.conf. Most common tweaks include setting rc_parallel and rc_logger to YES and rc_depend_strict to NO.
+Runit / s6
+Keyboard configuration in console
+
+A persistent keymap can be set in /etc/vconsole.conf, which is read by runit-rc/s6-rc on start-up. The KEYMAP variable is used for specifying the keymap. If the variable is empty or not set, the us keymap is used as default value. See vconsole.conf(5) (coming soon, but in the meantime you can see Arch's manual which refers to systemd, which is compatible with runit) for all options. For example:
+
+/etc/vconsole.conf
+
+ KEYMAP=uk
+ ...
+
+Hostname
+
+You can set it in /etc/hostname.
+
+/etc/hostname
+
+ reallycoolhostname

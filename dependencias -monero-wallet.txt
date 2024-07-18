@@ -1,0 +1,88 @@
+
+gcc cmake pkg-config boost openssl libzmq openpgm libunbound libsodium libunwind liblzma libreadline expat gtest ccache doxygen graphviz lrelease libhidapi libusb libprotobuf protoc libudev
+
+
+#ESTAS PARA ARCH DERIVADAS:
+gcc-libs
+glibc
+hicolor-icon-theme
+libboost_program_options.so=1.83.0-64 (boost-libs, boost-libs)
+libgcrypt
+libhidapi-libusb.so=0-64 (hidapi)
+libsodium.so=26-64 (libsodium)
+libssl.so=3-64 (openssl)
+libunbound.so=8-64 (unbound)
+libunwind
+libusb
+libx11
+monero
+pcsclite
+qt5-base
+qt5-declarative
+qt5-graphicaleffects
+qt5-quickcontrols
+qt5-quickcontrols2
+qt5-svg
+qt5-xmlpatterns
+boost (make)
+cmake (make)
+git (make)
+python (make)
+qt5-tools (make)
+#
+
+CLONAR REPOSITORIO:
+Clone recursively to pull-in needed submodule(s):
+git clone --recursive https://github.com/monero-project/monero
+
+If you already have a repo cloned, initialize and update:
+cd monero && git submodule init && git submodule update
+
+Note: If there are submodule differences between branches, you may need to use git submodule sync && git submodule update after changing branches to build successfully.
+ls
+Build instructions
+Monero uses the CMake build system and a top-level Makefile that invokes cmake commands as needed.
+
+On Linux and macOS
+Install the dependencies
+
+Change to the root of the source code directory, change to the most recent release branch, and build:
+
+cd monero
+git checkout release-v0.18
+make
+Optional: If your machine has several cores and enough memory, enable parallel build by running make -j<number of threads> instead of make. For this to be worthwhile, the machine should have one core and about 2GB of RAM available per thread.
+
+Note: The instructions above will compile the most stable release of the Monero software. If you would like to use and test the most recent software, use git checkout master. The master branch may contain updates that are both unstable and incompatible with release software, though testing is always encouraged.
+
+The resulting executables can be found in build/release/bin
+
+Add PATH="$PATH:$HOME/monero/build/release/bin" to .profile
+
+Run Monero with monerod --detach
+
+Optional: build and run the test suite to verify the binaries:
+
+make release-test
+NOTE: core_tests test may take a few hours to complete.
+
+Optional: to build binaries suitable for debugging:
+
+make debug
+Optional: to build statically-linked binaries:
+
+make release-static
+Dependencies need to be built with -fPIC. Static libraries usually aren't, so you may have to build them yourself with -fPIC. Refer to their documentation for how to build them.
+
+Optional: build documentation in doc/html (omit HAVE_DOT=YES if graphviz is not installed):
+
+HAVE_DOT=YES doxygen Doxyfile
+Optional: use ccache not to rebuild translation units, that haven't really changed. Monero's CMakeLists.txt file automatically handles it
+
+sudo apt install ccache
+
+
+
+
+
+

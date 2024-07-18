@@ -1,0 +1,14 @@
+pacman -Sy terminus-font
+setfont /usr/share/kbd/consolefonts/ter-220b
+
+para modificar de manera global y permanente el tamaño y typo de las fuentes de la consola TTY1 en:
+
+sudo vim /etc/vconsole     
+
+ejemplo:    FONT=ter-220b
+
+para modificar cosas del grub en:
+
+1-  sudo vim  /etc/default/grub
+
+2-  sudo update-grub
