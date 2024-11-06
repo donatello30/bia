@@ -1,0 +1,40 @@
+Declaring an Operating System guix system takes a configuration file that declares the complete configuration of an operating system, along these lines:
+
+	(use-modules (gnu))
+	(use-service-modules networking ssh)
+	(use-package-modules certs screen)
+
+	(operating-system
+ 	  (host-name "gnu")
+ 	  (timezone "Europe/Berlin")
+ 	  (locale "en_US.utf8")
+ 	  (keyboard-layout (keyboard-layout "us" "altgr-intl"))
+ 
+	(bootloader (bootloader-configuration
+ 	  (bootloader grub-efi-bootloader)
+ 	  (target (list "/boot/efi"))
+ 	  (keyboard-layout keyboard-layout)))
+	(file-systems (cons (file-system
+ 			     (device (file-system-label "my-root"))
+ 			     (mount-point "/")
+			     (type "ext4"))
+			    %base-file-systems))
+
+	(users (cons (user-account
+ 		      (name "charlie")
+		      (comment "Charlie Smith")
+ 		      (group "users")
+ 		      (supplementary-groups ’("wheel"
+ 				              "audio" "video")))
+		     %base-user-accounts))
+ 
+	;; Globally installed packages.
+        (packages (append (list screen nss-certs)
+			  %base-packages))
+ 
+	;; System services: add sshd and DHCP to the base services.
+        (services (append (list (service dhcp-client-service-type)
+ 				(service openssh-service-type
+ 					 (openssh-configuration
+					  (port-number 2222))))
+ 			  %base-services)))
