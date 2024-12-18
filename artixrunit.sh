@@ -8,16 +8,16 @@ sed -i '171s/.//' /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" >> /etc/locale.conf
 echo "KEYMAP=us" >> /etc/vconsole.conf
-echo "hostname" >> /etc/hostname
+echo "terminator" >> /etc/hostname
 echo "127.0.0.1 localhost" >> /etc/hosts
 echo "::1       localhost" >> /etc/hosts
-echo "127.0.1.1 hostname.localdomain hostname" >> /etc/hosts
+echo "127.0.1.1 terminator.localdomain terminator" >> /etc/hosts
 echo root:123| chpasswd
 
 # You can add xorg to the installation packages, I usually add it at the DE or WM install script
 # You can remove the tlp package if you are installing on a desktop or vm
  
-pacman -S grub os-prober efibootmgr networkmanager networkmanager-runit network-manager-applet linux-headers dosfstools xdg-user-dirs xdg-utils intel-ucode
+pacman -S grub os-prober efibootmgr networkmanager networkmanager-runit network-manager-applet linux-headers dosfstools xdg-user-dirs xdg-utils intel-ucode vim
 
 #pacman -S xf86_64-video-intel xorg --ignore xorg-server-xdmx sddm sddm-runit
 
