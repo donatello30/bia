@@ -1,4 +1,0 @@
-##
-SI queremos iniciar sway automaticamente desde el tty1 o consola, colocar la siguiente linea en el archivo .bash_profile
-#
-[ "$(tty)" = "/dev/tty1" ] && exec sway
